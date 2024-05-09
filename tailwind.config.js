@@ -7,6 +7,7 @@ export default withMT({
     extend: {
       fontFamily: {
         raleway: '"Raleway", sans-serif',
+        DotGothic16: '"DotGothic16", sans-serif',
       },
     },
   },

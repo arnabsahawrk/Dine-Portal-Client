@@ -108,28 +108,28 @@ const Footer = () => {
 
           <div className="flex -mx-2 gap-2 text-xl text-[#932584] *:p-1 *:rounded-full">
             <a
-              className="hover:text-[#d92775] hover:bg-[#932584] transition duration-700"
+              className="hover:text-pink-50 hover:bg-[#932584] transition duration-700"
               href="https://www.facebook.com/arnabsahawrk/"
               target="_blank"
             >
               <SlSocialFacebook />
             </a>
             <a
-              className="hover:text-[#d92775] hover:bg-[#932584] transition duration-700"
+              className="hover:text-pink-50 hover:bg-[#932584] transition duration-700"
               href="https://twitter.com/arnabsahawrk/"
               target="_blank"
             >
               <BsTwitterX />
             </a>
             <a
-              className="hover:text-[#d92775] hover:bg-[#932584] transition duration-700"
+              className="hover:text-pink-50 hover:bg-[#932584] transition duration-700"
               href="https://www.linkedin.com/in/arnabsahawrk/"
               target="_blank"
             >
               <RiLinkedinLine />
             </a>
             <a
-              className="hover:text-[#d92775] hover:bg-[#932584] transition duration-700"
+              className="hover:text-pink-50 hover:bg-[#932584] transition duration-700"
               href="https://github.com/arnabsahawrk/"
               target="_blank"
             >
