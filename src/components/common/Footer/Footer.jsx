@@ -8,7 +8,7 @@ import { Link, NavLink } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="bg-pink-50">
-      <div className="container px-6 py-8 mx-auto">
+      <div className="container px-4 py-8 mx-auto">
         <div className="flex flex-col items-center text-center">
           <Link className="flex gap-4 items-center" to="/">
             <img

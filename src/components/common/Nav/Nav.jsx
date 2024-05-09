@@ -98,7 +98,7 @@ const Nav = () => {
   }, []);
 
   return (
-    <Navbar className="fixed top-0 left-0 right-0 z-50 bg-pink-50 mx-auto max-w-full px-6 py-3 shadow-sm w-full backdrop-filter-none backdrop-blur-none border-none rounded-none">
+    <Navbar className="sticky top-0 left-0 right-0 z-50 bg-pink-50 mx-auto max-w-full px-4 shadow-sm w-full backdrop-filter-none backdrop-blur-none border-none rounded-none bg-opacity-100">
       <div className="flex items-center justify-between container mx-auto">
         <Link to="/">
           <Typography
