@@ -6,7 +6,9 @@ const HomePage = () => {
       <Helmet>
         <title>Home</title>
       </Helmet>
-      <section>{/* <div className="container mx-auto px-4"></div> */}</section>
+      <section className="bg-pink-50 py-[63px]">
+        {/* <div className="container mx-auto px-4"></div> */}
+      </section>
     </>
   );
 };
