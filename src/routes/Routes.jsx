@@ -4,6 +4,9 @@ import ErrorLayout from "../layouts/ErrorLayout";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegistrationPage from "../pages/RegistrationPage";
+import AddFoodPage from "../pages/AddFoodPage";
+import AddedFoodsPage from "../pages/AddedFoodsPage";
+import OrderedFoodsPage from "../pages/OrderedFoodsPage";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +25,18 @@ const router = createBrowserRouter([
       {
         path: "/registration",
         element: <RegistrationPage />,
+      },
+      {
+        path: "/addFood",
+        element: <AddFoodPage />,
+      },
+      {
+        path: "/addedFoods",
+        element: <AddedFoodsPage />,
+      },
+      {
+        path: "/orderedFoods",
+        element: <OrderedFoodsPage />,
       },
     ],
   },
