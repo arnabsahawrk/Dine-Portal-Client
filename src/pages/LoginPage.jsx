@@ -1,17 +1,17 @@
 import { Helmet } from "react-helmet-async";
-import HomeBanner from "../components/Banner/HomeBanner";
+import Login from "../components/Authentication/Login";
 
-const HomePage = () => {
+const LoginPage = () => {
   return (
     <>
       <Helmet>
-        <title>Dine Portal | Home</title>
+        <title>Dine Portal | LogIn</title>
       </Helmet>
       <section className="bg-pink-50 min-h-[calc(100vh-348px)]">
-        <HomeBanner />
+        <Login />
       </section>
     </>
   );
 };
 
-export default HomePage;
+export default LoginPage;

@@ -3,7 +3,8 @@ const HomeBanner = () => {
     <section className="relative">
       <video
         className="w-full h-[60vh] sm:h-[80vh] object-cover"
-        preload="metadata"
+        preload="auto"
+        playsInline
         autoPlay
         muted
         loop
