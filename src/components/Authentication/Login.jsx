@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { TbEyeCancel, TbEyeCheck } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Typography } from "@material-tailwind/react";
+import useFirebase from "../../hooks/useFirebase";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [passVisible, setPassVisible] = useState(false);
+  const { logInUser, logInWithGoogle } = useFirebase();
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     register,
     handleSubmit,
@@ -14,11 +19,74 @@ const Login = () => {
   } = useForm();
 
   //Authenticate User
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     const { email, password } = e;
-    console.log(email, password);
+
+    //Login New User
+    try {
+      await logInUser(email, password);
+      toast.success("Successfully LogIn.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+      navigate(location?.state || "/");
+    } catch {
+      toast.error("Invalid User.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+    }
 
     reset();
+  };
+
+  //LogIn with Google
+  const googleLogIn = async () => {
+    try {
+      await logInWithGoogle();
+      toast.success("Successfully LogIn.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+      navigate(location?.state || "/");
+    } catch {
+      toast.error("Login Failed.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+    }
   };
 
   return (
@@ -46,7 +114,10 @@ const Login = () => {
             Welcome back!
           </p>
 
-          <div className="flex cursor-pointer items-center justify-center mt-4 text-[#d92775] transition-colors duration-700 transform border border-[#932584] rounded-lg   hover:bg-[#932584] hover:text-pink-50">
+          <div
+            onClick={() => googleLogIn()}
+            className="flex cursor-pointer items-center justify-center mt-4 text-[#d92775] transition-colors duration-700 transform border border-[#932584] rounded-lg   hover:bg-[#932584] hover:text-pink-50"
+          >
             <div className="px-4 py-2">
               <svg className="w-6 h-6" viewBox="0 0 40 40">
                 <path

@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useFirebase from "../../../hooks/useFirebase";
 import toast from "react-hot-toast";
@@ -21,7 +21,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 function ProfileMenu() {
   //Auth
   const { user, logOutUser } = useFirebase();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const myPic = "https://i.postimg.cc/NM1cX9cm/profile.png";
 
   //Lot Out
@@ -40,8 +40,9 @@ function ProfileMenu() {
           secondary: "#fce4ec",
         },
       });
+      navigate("/");
     } catch {
-      toast.success("Failed, Try Again.", {
+      toast.error("Failed, Try Again.", {
         style: {
           border: "1px solid #932584",
           padding: "16px",
@@ -152,7 +153,9 @@ function NavList() {
         </NavLink>
       </Typography>
       {user ? (
-        <ProfileMenu />
+        <div className="flex">
+          <ProfileMenu />
+        </div>
       ) : (
         <Typography
           as="li"
