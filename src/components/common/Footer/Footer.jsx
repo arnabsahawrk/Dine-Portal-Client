@@ -78,23 +78,6 @@ const Footer = () => {
                   Gallery
                 </NavLink>
               </Typography>
-              <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-bold font-raleway text-[#932584] hover:text-[#d92775]"
-              >
-                <NavLink
-                  to="/login"
-                  className={({ isActive, isPending }) =>
-                    `${isActive ? "text-[#d92775]" : ""} ${
-                      isPending ? "text-pink-900" : ""
-                    }`
-                  }
-                >
-                  Login
-                </NavLink>
-              </Typography>
             </ul>
           </div>
         </div>
