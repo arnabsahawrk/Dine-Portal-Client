@@ -3,12 +3,101 @@ import {
   Collapse,
   Typography,
   IconButton,
+  Menu,
+  MenuHandler,
+  Avatar,
+  MenuList,
+  MenuItem,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
+import useFirebase from "../../../hooks/useFirebase";
+import toast from "react-hot-toast";
+import { TiArrowSortedDown } from "react-icons/ti";
+import { IoLogOutOutline } from "react-icons/io5";
+
+//User Log In Handling
+function ProfileMenu() {
+  //Auth
+  const { user, logOutUser } = useFirebase();
+  // const navigate = useNavigate();
+  const myPic = "https://i.postimg.cc/NM1cX9cm/profile.png";
+
+  //Lot Out
+  const logOut = async () => {
+    try {
+      await logOutUser();
+      toast.success("Log Out Successfully.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+    } catch {
+      toast.success("Failed, Try Again.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+    }
+  };
+  return (
+    <Menu>
+      <MenuHandler>
+        <div className="flex items-center">
+          <Avatar
+            variant="rounded"
+            size="md"
+            alt={user?.displayName || "Anonymous"}
+            src={user?.photoURL || myPic}
+            className="border-2 border-[#932584] cursor-pointer p-0.5"
+          />
+          <TiArrowSortedDown className="text-[#932584] text-xl" />
+        </div>
+      </MenuHandler>
+      <MenuList className="bg-pink-50 border-none shadow-xl">
+        <MenuItem className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1">
+          <Typography
+            variant="lead"
+            className="font-bold text-[#932584] font-raleway text-center w-full"
+          >
+            {user?.displayName || "Anonymous"}
+          </Typography>
+        </MenuItem>
+        <hr className="my-1 border-[#932584]" />
+        <MenuItem
+          onClick={() => logOut()}
+          className="flex items-center gap-2 hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0"
+        >
+          <IoLogOutOutline className="text-[#932584] text-xl" />
+          <Typography
+            variant="paragraph"
+            className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+          >
+            Log Out
+          </Typography>
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  );
+}
 
 function NavList() {
+  const { user } = useFirebase();
   return (
     <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
@@ -62,23 +151,27 @@ function NavList() {
           Gallery
         </NavLink>
       </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-bold font-raleway text-[#932584] hover:text-[#d92775]"
-      >
-        <NavLink
-          to="/login"
-          className={({ isActive, isPending }) =>
-            `${isActive ? "text-[#d92775]" : ""} ${
-              isPending ? "text-pink-900" : ""
-            }`
-          }
+      {user ? (
+        <ProfileMenu />
+      ) : (
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-bold font-raleway text-[#932584] hover:text-[#d92775]"
         >
-          Login
-        </NavLink>
-      </Typography>
+          <NavLink
+            to="/login"
+            className={({ isActive, isPending }) =>
+              `${isActive ? "text-[#d92775]" : ""} ${
+                isPending ? "text-pink-900" : ""
+              }`
+            }
+          >
+            Login
+          </NavLink>
+        </Typography>
+      )}
     </ul>
   );
 }

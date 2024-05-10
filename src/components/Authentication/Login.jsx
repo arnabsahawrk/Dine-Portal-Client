@@ -13,7 +13,7 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  //Form Validation And Authenticate Use
+  //Authenticate User
   const handleFormSubmit = (e) => {
     const { email, password } = e;
     console.log(email, password);
@@ -23,13 +23,15 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-306px)] container mx-auto px-4 py-10">
-      <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-[#d927751A] rounded-lg shadow-lg  md:max-w-4xl ">
+      <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-[#d927751A] rounded-lg shadow-lg  md:max-w-4xl">
         <div
-          className="hidden bg-cover bg-center md:block md:w-1/2"
+          className="hidden bg-cover bg-center md:block md:w-1/2 relative"
           style={{
             backgroundImage: `url('https://images.unsplash.com/photo-1606660265514-358ebbadc80d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1575&q=80')`,
           }}
-        ></div>
+        >
+          <div className="absolute inset-0 bg-pink-50 bg-opacity-30"></div>
+        </div>
 
         <div className="w-full px-6 py-8 md:px-8 md:w-1/2">
           <div className="flex justify-center mx-auto">
@@ -44,7 +46,7 @@ const Login = () => {
             Welcome back!
           </p>
 
-          <div className="flex cursor-pointer items-center justify-center mt-4 text-[#d92775] transition-colors duration-700 transform border border-[#932584] rounded-lg   hover:bg-[#932584] hover:text-pink-50 ">
+          <div className="flex cursor-pointer items-center justify-center mt-4 text-[#d92775] transition-colors duration-700 transform border border-[#932584] rounded-lg   hover:bg-[#932584] hover:text-pink-50">
             <div className="px-4 py-2">
               <svg className="w-6 h-6" viewBox="0 0 40 40">
                 <path
