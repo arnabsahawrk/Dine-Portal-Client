@@ -196,7 +196,12 @@ const Nav = () => {
   return (
     <Navbar className="sticky top-0 left-0 right-0 z-50 bg-pink-50 mx-auto max-w-full px-4 shadow-sm w-full backdrop-filter-none backdrop-blur-none border-none rounded-none bg-opacity-100">
       <div className="flex items-center justify-between container mx-auto">
-        <Link to="/">
+        <Link className="flex gap-4 items-center" to="/">
+          <img
+            className="w-auto h-7"
+            src="https://i.postimg.cc/VvfG9N7b/serving-dish.png"
+            alt="dine-portal"
+          />
           <Typography
             as="h1"
             variant="h4"

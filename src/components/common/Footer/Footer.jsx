@@ -86,7 +86,7 @@ const Footer = () => {
 
         <div className="flex flex-col items-center sm:flex-row sm:justify-between gap-3">
           <p className="text-sm text-[#932584]">
-            © Copyright 2024. All Rights Reserved.
+            © Copyright 2024 by arnabsahawrk
           </p>
 
           <div className="flex -mx-2 gap-2 text-xl text-[#932584] *:p-1 *:rounded-full">

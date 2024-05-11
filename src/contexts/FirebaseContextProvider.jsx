@@ -12,11 +12,13 @@ import {
 import auth from "../firebase/firebase.config";
 //Firebase Storage
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import useAxiosSecure from "../hooks/Axios/useAxiosSecure";
 
 export const FirebaseContext = createContext(null);
 const FirebaseContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const axiosSecure = useAxiosSecure();
 
   //Create User
   const createUser = (email, password) => {
@@ -55,12 +57,20 @@ const FirebaseContextProvider = ({ children }) => {
   //Observer On User
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      const loggedUser = currentUser?.email || user?.email;
       setUser(currentUser);
       setLoading(false);
+
+      //Set or clear cookie token
+      if (currentUser) {
+        axiosSecure.post("/jwt", loggedUser);
+      } else {
+        axiosSecure.post("/logout", loggedUser);
+      }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [user, axiosSecure]);
 
   const firebaseStorage = async (imageFile, fileName) => {
     const storage = getStorage();
