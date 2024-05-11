@@ -1,5 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import { useState } from "react";
+import TopFoodsCards from "../TopFoodsSection/TopFoodsCards";
 
 const AllFoodsCards = () => {
   const [search, SetSearch] = useState("");
@@ -9,7 +10,7 @@ const AllFoodsCards = () => {
     SetSearch("");
   };
   return (
-    <div>
+    <div className="space-y-4 md:space-y-6">
       {/* Search Foods  */}
       <div className="relative mx-auto flex w-full max-w-[24rem]">
         <input
@@ -31,7 +32,9 @@ const AllFoodsCards = () => {
         </Button>
       </div>
       {/* Foods Cards  */}
-      <div></div>
+      <div>
+        <TopFoodsCards />
+      </div>
     </div>
   );
 };
