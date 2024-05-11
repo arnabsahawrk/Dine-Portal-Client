@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Dialog, Typography } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
+import GalleryCard from "./GalleryCard";
 
+//Modal
 const FeedbackModal = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
@@ -76,8 +78,8 @@ const FeedbackModal = () => {
                   message: "Write at least 10 words.",
                 },
                 maxLength: {
-                  value: 50,
-                  message: "Write in 50 words.",
+                  value: 30,
+                  message: "Write in 30 words.",
                 },
               })}
             />
@@ -134,11 +136,15 @@ const FeedbackModal = () => {
 
 const Gallery = () => {
   return (
-    <div>
+    <div className="space-y-4 md:space-y-6">
       {/* Add Feedback Button  */}
       <FeedbackModal />
       {/* Gallery Card  */}
-      <div></div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {[...Array(12).keys()].map((idx) => (
+          <GalleryCard key={idx} />
+        ))}
+      </div>
     </div>
   );
 };
