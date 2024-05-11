@@ -1,6 +1,6 @@
 const PurchaseFood = () => {
   return (
-    <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-[#d927751A] rounded-lg shadow-lg  md:max-w-4xl">
+    <div className="flex w-full max-w-xs mx-auto overflow-hidden bg-[#d927751A] rounded-lg shadow-lg  md:max-w-4xl">
       <div
         className="hidden bg-cover bg-center md:block md:w-1/2 relative"
         style={{
@@ -22,14 +22,13 @@ const PurchaseFood = () => {
           <p>Food Origin: BD</p>
           <p>Price: $300</p>
         </div>
-        <div className="py-1 text-[#932584]">
+        <div className="py-1 text-[#932584] text-center space-y-1">
           <p>Name: Arnab Saha</p>
           <p>Email: arnabsahawrk@gmail.com</p>
+          <button className="px-4 py-2 text-base tracking-wide text-pink-50 bg-[#932584]  rounded-md font-bold">
+            Purchase
+          </button>
         </div>
-
-        <button className="w-full px-4 py-2 text-base tracking-wide text-pink-50 bg-[#932584]  rounded-md font-bold">
-          Purchase
-        </button>
       </div>
     </div>
   );
