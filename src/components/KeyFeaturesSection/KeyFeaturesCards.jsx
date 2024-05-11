@@ -9,9 +9,9 @@ const KeyFeaturesCards = () => {
           style={{
             backgroundImage: `url('https://matchthemes.com/demowp/dina/wp-content/uploads/2017/02/featured-img-1-2.jpg')`,
           }}
-          className="bg-cover bg-center bg-no-repeat h-72 rounded-md relative transition duration-700 transform hover:scale-105"
+          className="bg-cover bg-center bg-no-repeat h-72 rounded-md relative transition-transform duration-700 transform hover:scale-105"
         >
-          <div className="absolute inset-0 bg-pink-50 bg-opacity-25 flex flex-col justify-center items-center space-y-2">
+          <div className="absolute inset-0 bg-pink-50 bg-opacity-25 hover:bg-opacity-0 transition duration-700 flex flex-col justify-center items-center space-y-2">
             <h2 className="text-pink-50 font-bold text-2xl uppercase">
               Add Food
             </h2>
@@ -25,9 +25,9 @@ const KeyFeaturesCards = () => {
           style={{
             backgroundImage: `url('https://matchthemes.com/demowp/dina/wp-content/uploads/2017/02/featured-img-2-1.jpg')`,
           }}
-          className="bg-cover bg-center bg-no-repeat h-72 rounded-md relative transition duration-700 transform hover:scale-105"
+          className="bg-cover bg-center bg-no-repeat h-72 rounded-md relative transition-transform duration-700 transform hover:scale-105"
         >
-          <div className="absolute inset-0 bg-pink-50 bg-opacity-25 flex flex-col justify-center items-center space-y-2">
+          <div className="absolute inset-0 bg-pink-50 bg-opacity-25 hover:bg-opacity-0 transition duration-700 flex flex-col justify-center items-center space-y-2">
             <h2 className="text-pink-50 font-bold text-2xl uppercase">
               Added Foods
             </h2>
@@ -36,14 +36,14 @@ const KeyFeaturesCards = () => {
         </div>
       </Link>
       {/* Ordered Food  */}
-      <Link to="/orderedFoods">
+      <Link to="/orderedFoods" className="md:col-span-2 xl:col-auto">
         <div
           style={{
             backgroundImage: `url('https://matchthemes.com/demowp/dina/wp-content/uploads/2017/02/featured-img-3-1.jpg')`,
           }}
-          className="bg-cover bg-center bg-no-repeat h-72 rounded-md relative md:col-span-2 xl:col-auto transition duration-700 transform hover:scale-105"
+          className="bg-cover bg-center bg-no-repeat h-72 rounded-md relative transition-transform duration-700 transform hover:scale-105"
         >
-          <div className="absolute inset-0 bg-pink-50 bg-opacity-25 flex flex-col justify-center items-center space-y-2">
+          <div className="absolute inset-0 bg-pink-50 bg-opacity-25 hover:bg-opacity-0 transition duration-700 flex flex-col justify-center items-center space-y-2">
             <h2 className="text-pink-50 font-bold text-2xl uppercase">
               Ordered Foods
             </h2>

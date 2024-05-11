@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import HomeBanner from "../components/Banner/HomeBanner";
 import FAQSection from "../components/FAQSection/FAQSection";
 import KeyFeaturesSection from "../components/KeyFeaturesSection/KeyFeaturesSection";
+import TopFoodsSection from "../components/TopFoodsSection/TopFoodsSection";
 
 const HomePage = () => {
   return (
@@ -12,6 +13,7 @@ const HomePage = () => {
       <section className="bg-pink-50 min-h-[calc(100vh-348px)]">
         <HomeBanner />
         <KeyFeaturesSection />
+        <TopFoodsSection />
         <FAQSection />
       </section>
     </>

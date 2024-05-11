@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const HomeBanner = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative">
       <video
@@ -23,7 +26,10 @@ const HomeBanner = () => {
           <p className="text-sm sm:text-base">
             Showcase and savor culinary delights, all in one place
           </p>
-          <button className="text-sm sm:text-base border-2 sm:border-4 border-pink-50 py-[10px] px-6 font-bold transition-colors duration-700 hover:bg-[#932584] hover:border-[#932584]">
+          <button
+            onClick={() => navigate("/allFoods")}
+            className="text-sm sm:text-base border-2 sm:border-4 border-pink-50 py-[10px] px-6 font-bold transition-colors duration-700 hover:bg-[#932584] hover:border-[#932584]"
+          >
             All Foods
           </button>
         </div>
