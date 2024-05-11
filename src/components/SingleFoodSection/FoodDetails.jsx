@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const FoodDetails = () => {
+  const navigate = useNavigate();
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
       {/* Right Side  */}
@@ -47,7 +50,7 @@ const FoodDetails = () => {
           <ul className="text-[#932584] text-lg font-bold space-y-2 overflow-auto max-h-[400px]">
             {[...Array(10).keys()].map((idx) => (
               <li key={idx} className="bg-[#d927751A] p-2 rounded-md">
-                Lorem ipsum dolor sit amet.
+                Lorem ipsum dolor sit.
               </li>
             ))}
           </ul>
@@ -58,7 +61,10 @@ const FoodDetails = () => {
           </span>
         </p>
         <p className="text-[#932584] font-bold text-3xl">Price: $300</p>
-        <button className="w-full px-6 py-3 text-base tracking-wide text-pink-50 bg-[#932584]  rounded-md font-bold">
+        <button
+          onClick={() => navigate("/purchaseFood")}
+          className="w-full px-6 py-3 text-base tracking-wide text-pink-50 bg-[#932584]  rounded-md font-bold"
+        >
           Confirm Order
         </button>
       </div>

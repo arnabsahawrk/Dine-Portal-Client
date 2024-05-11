@@ -9,6 +9,7 @@ import AddedFoodsPage from "../pages/AddedFoodsPage";
 import OrderedFoodsPage from "../pages/OrderedFoodsPage";
 import AllFoodsPage from "../pages/AllFoodsPage";
 import SingleFoodPage from "../pages/SingleFoodPage";
+import PurchaseFoodPage from "../pages/PurchaseFoodPage";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/allFoods/foodDetails",
         element: <SingleFoodPage />,
+      },
+      {
+        path: "/purchaseFood",
+        element: <PurchaseFoodPage />,
       },
     ],
   },
