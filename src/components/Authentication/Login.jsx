@@ -25,7 +25,7 @@ const Login = () => {
     //Login New User
     try {
       await logInUser(email, password);
-      toast.success("Successfully LogIn.", {
+      toast.success("Successfully Log In.", {
         style: {
           border: "1px solid #932584",
           padding: "16px",
@@ -60,7 +60,7 @@ const Login = () => {
   const googleLogIn = async () => {
     try {
       await logInWithGoogle();
-      toast.success("Successfully LogIn.", {
+      toast.success("Successfully Log In.", {
         style: {
           border: "1px solid #932584",
           padding: "16px",
