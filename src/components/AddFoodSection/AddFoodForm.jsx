@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 
 const AddFoodForm = () => {
   const addedTime = new Date().toLocaleString();
+  const updatedTime = "";
 
   const {
     register,
@@ -36,6 +37,7 @@ const AddFoodForm = () => {
       price,
       description,
       addedTime,
+      updatedTime,
     };
 
     console.log(formData);
