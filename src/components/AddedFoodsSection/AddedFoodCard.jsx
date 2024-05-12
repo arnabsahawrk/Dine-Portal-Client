@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 
 //Modal
 const UpdateModal = () => {
-  const updatedTime = new Date().toLocaleString();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
 
@@ -17,7 +16,8 @@ const UpdateModal = () => {
   } = useForm();
 
   const handleFormSubmit = (e) => {
-    const {
+    const updatedTime = new Date().toLocaleString();
+    let {
       userName,
       userEmail,
       foodName,
@@ -28,6 +28,9 @@ const UpdateModal = () => {
       price,
       description,
     } = e;
+
+    quantity = parseFloat(quantity);
+    price = parseFloat(price);
 
     const formData = {
       userName,
@@ -62,7 +65,7 @@ const UpdateModal = () => {
         size="lg"
         open={open}
         handler={handleOpen}
-        className="bg-transparent shadow-none"
+        className="bg-transparent shadow-none h-[450px] md:h-auto overflow-auto"
       >
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mx-auto overflow-hidden bg-pink-50 rounded-lg shadow-lg   px-6 py-8 md:px-8"
@@ -323,7 +326,6 @@ const UpdateModal = () => {
             </button>
           </div>
         </form>
-        ;
       </Dialog>
     </div>
   );

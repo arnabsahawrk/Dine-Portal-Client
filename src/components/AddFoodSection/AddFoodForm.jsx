@@ -2,9 +2,6 @@ import { Typography } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 
 const AddFoodForm = () => {
-  const addedTime = new Date().toLocaleString();
-  const updatedTime = "";
-
   const {
     register,
     handleSubmit,
@@ -14,7 +11,9 @@ const AddFoodForm = () => {
 
   //Form Submission
   const handleFormSubmit = (e) => {
-    const {
+    const addedTime = new Date().toLocaleString();
+    const updatedTime = "";
+    let {
       userName,
       userEmail,
       foodName,
@@ -25,6 +24,9 @@ const AddFoodForm = () => {
       price,
       description,
     } = e;
+
+    quantity = parseFloat(quantity);
+    price = parseFloat(price);
 
     const formData = {
       userName,
