@@ -36,7 +36,7 @@ const PurchaseFood = () => {
             <li>Added: 12/12/2024, 23:23</li>
             <li>Category: Italian</li>
             <li>Food Origin: European</li>
-            <li>Remain: 20</li>
+            <li>Quantity: 20</li>
             <li>Price: $50</li>
           </ul>
         </div>
@@ -80,7 +80,7 @@ const PurchaseFood = () => {
                   },
                   max: {
                     value: 4,
-                    message: "You can't add more than remain quantity.",
+                    message: "You can't purchase more than remain quantity.",
                   },
                 })}
               />

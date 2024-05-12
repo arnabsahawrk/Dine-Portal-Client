@@ -19,6 +19,7 @@ const AddFoodForm = () => {
   const handleFormSubmit = async (e) => {
     const addedTime = new Date().toLocaleString();
     const updatedTime = "";
+    const sold = 0;
     let {
       userName,
       userEmail,
@@ -43,6 +44,7 @@ const AddFoodForm = () => {
       foodOrigin,
       quantity,
       price,
+      sold,
       description,
       addedTime,
       updatedTime,

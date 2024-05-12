@@ -55,11 +55,14 @@ const FoodDetails = () => {
             ))}
           </ul>
         </div>
-        <p>
-          <span className="bg-[#932584] text-pink-50 rounded-md px-2 py-1 text-sm">
+        <ul className="flex items-center justify-between">
+          <li className="bg-[#932584] text-pink-50 rounded-md px-2 py-1 text-sm">
             Quantity: 5
-          </span>
-        </p>
+          </li>
+          <li className="bg-[#932584] text-pink-50 rounded-md px-2 py-1 text-sm">
+            Sold: 0
+          </li>
+        </ul>
         <p className="text-[#932584] font-bold text-3xl">Price: $300</p>
         <button
           onClick={() => navigate("/purchaseFood")}
