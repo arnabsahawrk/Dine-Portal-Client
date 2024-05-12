@@ -20,6 +20,8 @@ const AddFoodForm = () => {
     const addedTime = new Date().toLocaleString();
     const updatedTime = "";
     const sold = 0;
+    const userPic =
+      user.photoURL || "https://i.postimg.cc/NM1cX9cm/profile.png";
     let {
       userName,
       userEmail,
@@ -38,6 +40,7 @@ const AddFoodForm = () => {
     const formData = {
       userName,
       userEmail,
+      userPic,
       foodName,
       imageURL,
       foodCategory,

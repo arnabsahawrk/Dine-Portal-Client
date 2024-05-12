@@ -41,23 +41,35 @@ const router = createBrowserRouter([
       },
       {
         path: "/addedFoods",
-        element: <AddedFoodsPage />,
+        element: (
+          <PrivateRoute>
+            <AddedFoodsPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/orderedFoods",
-        element: <OrderedFoodsPage />,
+        element: (
+          <PrivateRoute>
+            <OrderedFoodsPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/allFoods",
         element: <AllFoodsPage />,
       },
       {
-        path: "/allFoods/foodDetails",
+        path: "/allFoods/foodDetails/:id",
         element: <SingleFoodPage />,
       },
       {
         path: "/purchaseFood",
-        element: <PurchaseFoodPage />,
+        element: (
+          <PrivateRoute>
+            <PurchaseFoodPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/gallery",

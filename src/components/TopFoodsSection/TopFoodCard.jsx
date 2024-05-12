@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const TopFoodCard = ({ food }) => {
-  const { imageURL, foodName, foodCategory, quantity, price } = food;
+  const { _id, imageURL, foodName, foodCategory, quantity, price } = food;
   return (
-    <Link to="/allFoods/foodDetails">
+    <Link to={`/allFoods/foodDetails/${_id}`}>
       <div className="flex flex-col items-center justify-center w-full max-w-sm mx-auto">
         <div
           className="w-full h-64 bg-pink-50 bg-center bg-cover rounded-lg shadow-md relative"

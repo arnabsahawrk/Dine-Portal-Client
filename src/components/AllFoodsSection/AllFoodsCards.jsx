@@ -1,8 +1,11 @@
 import { Button } from "@material-tailwind/react";
 import { useState } from "react";
-import TopFoodsCards from "../TopFoodsSection/TopFoodsCards";
+import useGetAllFoods from "../../hooks/TanstackQuery/useGetAllFoods";
+import Loader from "../Loader/Loader";
+import TopFoodCard from "../TopFoodsSection/TopFoodCard";
 
 const AllFoodsCards = () => {
+  const { allFoods, loadingAllFoods } = useGetAllFoods();
   const [search, SetSearch] = useState("");
   const onChange = ({ target }) => SetSearch(target.value);
 
@@ -33,7 +36,15 @@ const AllFoodsCards = () => {
       </div>
       {/* Foods Cards  */}
       <div>
-        <TopFoodsCards />
+        {loadingAllFoods ? (
+          <Loader />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-6">
+            {allFoods?.map((food) => (
+              <TopFoodCard key={food._id} food={food} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
