@@ -16,6 +16,8 @@ import useFirebase from "../../../hooks/useFirebase";
 import toast from "react-hot-toast";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { IoLogOutOutline } from "react-icons/io5";
+import { CiEdit, CiSquarePlus } from "react-icons/ci";
+import { MdOutlineManageHistory } from "react-icons/md";
 
 //User Log In Handling
 function ProfileMenu() {
@@ -71,6 +73,7 @@ function ProfileMenu() {
         </div>
       </MenuHandler>
       <MenuList className="bg-pink-50 border-none shadow-xl">
+        {/* Display Name  */}
         <MenuItem className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1">
           <Typography
             variant="lead"
@@ -80,6 +83,47 @@ function ProfileMenu() {
           </Typography>
         </MenuItem>
         <hr className="my-1 border-[#932584]" />
+
+        {/* Add Food  */}
+        <MenuItem
+          onClick={() => navigate("/addFood")}
+          className="flex items-center gap-2 hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0"
+        >
+          <CiSquarePlus className="text-[#932584] text-xl" />
+          <Typography
+            variant="paragraph"
+            className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+          >
+            Add Food
+          </Typography>
+        </MenuItem>
+        {/*  Added Foods */}
+        <MenuItem
+          onClick={() => navigate("/addedFoods")}
+          className="flex items-center gap-2 hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0"
+        >
+          <CiEdit className="text-[#932584] text-xl" />
+          <Typography
+            variant="paragraph"
+            className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+          >
+            Added Foods
+          </Typography>
+        </MenuItem>
+        {/* Ordered Foods  */}
+        <MenuItem
+          onClick={() => navigate("/orderedFoods")}
+          className="flex items-center gap-2 hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0"
+        >
+          <MdOutlineManageHistory className="text-[#932584] text-xl" />
+          <Typography
+            variant="paragraph"
+            className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+          >
+            Ordered Foods
+          </Typography>
+        </MenuItem>
+        {/* Log Out  */}
         <MenuItem
           onClick={() => logOut()}
           className="flex items-center gap-2 hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0"

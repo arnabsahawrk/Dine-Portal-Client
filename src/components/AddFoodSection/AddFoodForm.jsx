@@ -1,7 +1,13 @@
 import { Typography } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import useAxiosSecure from "../../hooks/Axios/useAxiosSecure";
+import useFirebase from "../../hooks/useFirebase";
 
 const AddFoodForm = () => {
+  const axiosSecure = useAxiosSecure();
+  const { user } = useFirebase();
+
   const {
     register,
     handleSubmit,
@@ -10,7 +16,7 @@ const AddFoodForm = () => {
   } = useForm();
 
   //Form Submission
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     const addedTime = new Date().toLocaleString();
     const updatedTime = "";
     let {
@@ -42,8 +48,40 @@ const AddFoodForm = () => {
       updatedTime,
     };
 
-    console.log(formData);
-    reset();
+    try {
+      const response = await axiosSecure.post("/foods", formData);
+      const { data } = response;
+      if (data?.insertedId) {
+        toast.success("Food Successfully Added In Database.", {
+          style: {
+            border: "1px solid #932584",
+            padding: "16px",
+            color: "#932584",
+            background: "#fce4ec",
+          },
+          iconTheme: {
+            primary: "#932584",
+            secondary: "#fce4ec",
+          },
+        });
+      }
+      reset();
+      //Refetch useMutations
+      //Send The user to the added page and the hashLink id.
+    } catch {
+      toast.error("Adding Food In Database Failed.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+    }
   };
   return (
     <div>
@@ -57,7 +95,7 @@ const AddFoodForm = () => {
             User
           </label>
           <input
-            defaultValue={"Arnab Saha"}
+            defaultValue={user?.displayName || "Anonymous"}
             name="userName"
             className="block w-full px-4 py-2 text-[#932584] bg-[#f8d1e0] border border-[#932584] rounded-lg    focus:outline-none font-bold"
             readOnly
@@ -71,7 +109,7 @@ const AddFoodForm = () => {
             Email
           </label>
           <input
-            defaultValue={"arnabsahawrk@gmail.com"}
+            defaultValue={user?.email || "None"}
             name="email"
             className="block w-full px-4 py-2 text-[#932584] bg-[#f8d1e0] border border-[#932584] rounded-lg    focus:outline-none font-bold"
             readOnly
@@ -99,8 +137,8 @@ const AddFoodForm = () => {
                 message: "Food Name should have at least 4 characters",
               },
               maxLength: {
-                value: 8,
-                message: "Food Name should be in 8 characters",
+                value: 20,
+                message: "Food Name should be in 20 characters",
               },
             })}
           />
