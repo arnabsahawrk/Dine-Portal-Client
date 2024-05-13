@@ -1,11 +1,12 @@
 import { Typography } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import useAxiosSecure from "../../hooks/Axios/useAxiosSecure";
 import useFirebase from "../../hooks/useFirebase";
+import useAddFoodMutation from "../../hooks/TanstackQuery/useAddFoodMutation";
+import PostLoader from "../Loader/PostLoader";
 
 const AddFoodForm = () => {
-  const axiosSecure = useAxiosSecure();
+  const { addFoodAsync, pendingAddFood } = useAddFoodMutation();
   const { user } = useFirebase();
 
   const {
@@ -54,22 +55,19 @@ const AddFoodForm = () => {
     };
 
     try {
-      const response = await axiosSecure.post("/foods", formData);
-      const { data } = response;
-      if (data?.insertedId) {
-        toast.success("Food Successfully Added In Database.", {
-          style: {
-            border: "1px solid #932584",
-            padding: "16px",
-            color: "#932584",
-            background: "#fce4ec",
-          },
-          iconTheme: {
-            primary: "#932584",
-            secondary: "#fce4ec",
-          },
-        });
-      }
+      await addFoodAsync(formData);
+      toast.success("Food Successfully Added In Database.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
       reset();
       //Refetch useMutations
       //Send The user to the added page and the hashLink id.
@@ -340,12 +338,16 @@ const AddFoodForm = () => {
         </div>
 
         <div className="mt-6 md:col-span-2">
-          <button
-            type="submit"
-            className="w-full px-4 py-2 text-sm font-medium tracking-wide text-pink-50 bg-[#932584] rounded-lg focus:outline-none uppercase"
-          >
-            Add
-          </button>
+          {pendingAddFood ? (
+            <PostLoader />
+          ) : (
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-sm font-medium tracking-wide text-pink-50 bg-[#932584] rounded-lg focus:outline-none uppercase"
+            >
+              Add
+            </button>
+          )}
         </div>
       </form>
     </div>

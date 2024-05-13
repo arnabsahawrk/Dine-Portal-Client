@@ -1,7 +1,15 @@
 import { Typography } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
+import useFirebase from "../../hooks/useFirebase";
+import toast from "react-hot-toast";
+import useAddOrderMutation from "../../hooks/TanstackQuery/useAddOrderMutation";
+import PostLoader from "../Loader/PostLoader";
+import useIncrementMutation from "../../hooks/TanstackQuery/useIncrementMutation";
 
-const PurchaseFood = () => {
+const PurchaseFood = ({ singleFood }) => {
+  const { orderAsync, pendingOrder } = useAddOrderMutation();
+  const { incrementAsync } = useIncrementMutation();
   const {
     register,
     handleSubmit,
@@ -9,55 +17,141 @@ const PurchaseFood = () => {
     formState: { errors },
   } = useForm();
   let purchaseDate = new Date().toLocaleDateString();
-  const handlePurchaseFood = (e) => {
-    const { quantity } = e;
+  const { user } = useFirebase();
+
+  let {
+    _id: foodId,
+    addedTime,
+    foodName,
+    description,
+    foodCategory,
+    foodOrigin,
+    userName: sellerName,
+    userEmail: sellerEmail,
+    imageURL: foodImage,
+    quantity,
+    sold,
+    price,
+    userPic: sellerImage,
+  } = singleFood;
+  const handlePurchaseFood = async (e) => {
+    let { quantity: buyerQuantity } = e;
     purchaseDate = new Date().toLocaleString();
-    console.log(purchaseDate, quantity);
-    reset;
+    const quantityRemain = parseFloat(quantity - buyerQuantity);
+    buyerQuantity = parseFloat(buyerQuantity);
+    sold = parseFloat(sold + buyerQuantity);
+    const BuyerName = user.displayName || "Anonymous";
+    const BuyerEmail = user.email || "None";
+    const BuyerPic =
+      user.photoURL || "https://i.postimg.cc/NM1cX9cm/profile.png";
+    const formData = {
+      foodId,
+      addedTime,
+      foodName,
+      description,
+      foodCategory,
+      foodOrigin,
+      sellerName,
+      sellerEmail,
+      sellerImage,
+      quantityRemain,
+      sold,
+      price,
+      foodImage,
+      BuyerName,
+      BuyerEmail,
+      BuyerPic,
+      buyerQuantity,
+    };
+
+    try {
+      await orderAsync(formData);
+      await incrementAsync({ foodId, buyerQuantity });
+      toast.success("Order Done Successfully.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+      reset();
+      //Refetch useMutations
+      //Send The user to the added page and the hashLink id.
+    } catch {
+      toast.error("Order Failed.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+    }
   };
   return (
-    <div className="flex flex-col lg:flex-row gap-4 bg-[#d927751A] rounded-lg shadow-lg">
+    <div
+      className={`flex flex-col lg:flex-row gap-4 ${
+        sellerEmail === user.email ? "" : "bg-[#d927751A] rounded-lg shadow-lg"
+      }`}
+    >
       {/* Order Details  */}
-      <div className="overflow-hidden bg-[#d927754D] rounded-lg shadow-lg p-4 lg:w-1/2">
+      <div
+        className={`overflow-hidden bg-[#d927754D] rounded-lg shadow-lg p-4 ${
+          sellerEmail === user.email ? "w-full max-w-xl mx-auto" : "lg:w-1/2"
+        }`}
+      >
         <p className="text-[#932584] font-bold underline decoration-double">
           Food Details
         </p>
         <img
           className="object-cover size-48 mx-auto rounded-lg"
-          src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=320&q=80"
-          alt="NIKE AIR"
+          src={foodImage}
+          alt={foodName}
         />
         <div className="px-4 py-2 text-center">
           <h1 className="text-xl font-bold text-[#932584] uppercase">
-            NIKE AIR
+            {foodName}
           </h1>
           <ul className="mt-1 text-sm text-[#d92775]">
-            <li>Seller: Arnab Saha</li>
-            <li>Added: 12/12/2024, 23:23</li>
-            <li>Category: Italian</li>
-            <li>Food Origin: European</li>
-            <li>Quantity: 20</li>
-            <li>Price: $50</li>
+            <li>Seller: {sellerName}</li>
+            <li>Added: {addedTime}</li>
+            <li>Category: {foodCategory}</li>
+            <li>Food Origin: {foodOrigin}</li>
+            <li>Quantity: {quantity}</li>
+            <li>Price: ${price}</li>
           </ul>
         </div>
       </div>
       {/* Buyer Info  */}
-      <div className="overflow-hidden bg-[#d927751A] rounded-lg shadow-lg p-4 lg:w-1/2">
+      <div
+        className={`overflow-hidden bg-[#d927751A] rounded-lg shadow-lg p-4 ${
+          sellerEmail === user.email ? "hidden" : "lg:w-1/2"
+        }`}
+      >
         <p className="text-[#932584] font-bold underline decoration-double">
           Billing
         </p>
         <div className="px-4 py-2 text-center border-b border-[#932584] mb-2 text-[#d92775] font-bold">
           <p className="text-right font-medium">{purchaseDate}</p>
           <h1 className="text-xl font-bold text-[#932584] uppercase">
-            NIKE AIR
+            {foodName}
           </h1>
-          <p>Category: Italian</p>
-          <p>Food Origin: BD</p>
-          <p>Price: $300</p>
+          <p>Category: {foodCategory}</p>
+          <p>Food Origin: {foodOrigin}</p>
+          <p>Price: ${price}</p>
         </div>
         <div className="py-1 text-[#932584] flex flex-col justify-center items-center">
-          <p>Name: Arnab Saha</p>
-          <p>Email: arnabsahawrk@gmail.com</p>
+          <p>Name: {user?.displayName || "Anonymous"}</p>
+          <p>Email: {user?.email || "None"}</p>
           {/* Form of Order  */}
           <form
             onSubmit={handleSubmit(handlePurchaseFood)}
@@ -78,8 +172,12 @@ const PurchaseFood = () => {
                     value: true,
                     message: "Food Quantity is required.",
                   },
+                  min: {
+                    value: 1,
+                    message: "Without add quantity you can't purchase.",
+                  },
                   max: {
-                    value: 4,
+                    value: quantity,
                     message: "You can't purchase more than remain quantity.",
                   },
                 })}
@@ -93,12 +191,19 @@ const PurchaseFood = () => {
                 </Typography>
               )}
             </div>
-            <button
-              type="submit"
-              className="px-4 py-2 text-base tracking-wide text-pink-50 bg-[#932584]  rounded-md font-bold"
-            >
-              Purchase
-            </button>
+            {pendingOrder ? (
+              <PostLoader />
+            ) : (
+              <button
+                disabled={quantity ? false : true}
+                type="submit"
+                className={`px-4 py-2 text-base tracking-wide text-pink-50 ${
+                  quantity ? "bg-[#932584]" : "bg-[#93258480]"
+                }  rounded-md font-bold`}
+              >
+                {quantity ? "Purchase" : "Sold Out"}
+              </button>
+            )}
           </form>
         </div>
       </div>
@@ -106,4 +211,7 @@ const PurchaseFood = () => {
   );
 };
 
+PurchaseFood.propTypes = {
+  singleFood: PropTypes.object.isRequired,
+};
 export default PurchaseFood;

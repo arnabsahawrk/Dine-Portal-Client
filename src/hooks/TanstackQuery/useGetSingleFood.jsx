@@ -9,7 +9,7 @@ const useGetSingleFood = (id) => {
       const { data } = response;
       return data;
     } catch (err) {
-      return err;
+      throw new Error(err.response.data.message || "Failed to get single food");
     }
   };
 

@@ -64,7 +64,7 @@ const router = createBrowserRouter([
         element: <SingleFoodPage />,
       },
       {
-        path: "/purchaseFood",
+        path: "/purchaseFood/:id",
         element: (
           <PrivateRoute>
             <PurchaseFoodPage />

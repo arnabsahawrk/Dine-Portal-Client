@@ -11,7 +11,7 @@ const useGetTopFoods = (skip = 0, limit = 0) => {
       const { data } = response;
       return data;
     } catch (err) {
-      return err;
+      throw new Error(err.response.data.message || "Failed to get top foods");
     }
   };
 

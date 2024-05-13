@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import useFirebase from "../../hooks/useFirebase";
 
 const FoodDetails = ({ singleFood }) => {
+  const { user } = useFirebase();
   const {
+    _id,
     addedTime,
     foodName,
     description,
@@ -60,12 +63,16 @@ const FoodDetails = ({ singleFood }) => {
       <p className="text-[#932584] font-bold text-3xl">Price: ${price}</p>
       <button
         disabled={quantity ? false : true}
-        onClick={() => navigate("/purchaseFood")}
+        onClick={() => navigate(`/purchaseFood/${_id}`)}
         className={`px-6 py-3 text-base tracking-wide text-pink-50 ${
           quantity ? "bg-[#932584]" : "bg-[#93258480]"
         }  rounded-md font-bold`}
       >
-        {quantity ? "Confirm Order" : "Sold Out"}
+        {user?.email === userEmail
+          ? "View"
+          : quantity
+          ? "Confirm Order"
+          : "Sold Out"}
       </button>
     </div>
   );
