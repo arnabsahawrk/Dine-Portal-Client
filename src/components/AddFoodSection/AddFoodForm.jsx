@@ -270,6 +270,10 @@ const AddFoodForm = () => {
                 value: true,
                 message: "Food Quantity is required.",
               },
+              min: {
+                value: 1,
+                message: "You should add at least 1 quantity.",
+              },
             })}
           />
           {errors.quantity && (
@@ -295,6 +299,10 @@ const AddFoodForm = () => {
               required: {
                 value: true,
                 message: "Food Price is required.",
+              },
+              min: {
+                value: 10,
+                message: "Price Shouldn't be less than $10.",
               },
             })}
           />

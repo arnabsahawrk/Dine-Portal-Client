@@ -346,6 +346,10 @@ const AddedFoodCard = ({ food }) => {
                       value: true,
                       message: "Food Price is required.",
                     },
+                    min: {
+                      value: 10,
+                      message: "Price Shouldn't be less than $10.",
+                    },
                   })}
                 />
                 {errors.price && (

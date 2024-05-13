@@ -2,11 +2,43 @@ import { useState } from "react";
 import { Dialog, Typography } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import GalleryCard from "./GalleryCard";
+import useFirebase from "../../hooks/useFirebase";
+import toast from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
+import usePostFeedback from "../../hooks/TanstackQuery/usePostFeedback";
+import PostLoader from "../Loader/PostLoader";
+import useGetAllFeedBacks from "../../hooks/TanstackQuery/useGetAllFeedBacks";
+import Loader from "../Loader/Loader";
 
 //Modal
 const FeedbackModal = () => {
+  const { user } = useFirebase();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { feedbackAsync, pendingFeedback } = usePostFeedback();
+
+  //Checking The User IsLogin
+  const handleUserAddFeedback = () => {
+    if (!user) {
+      toast.error("You Should Log In First.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+      navigate("/login", { state: location.pathname });
+    } else {
+      handleOpen();
+    }
+  };
 
   //Input Form
   const {
@@ -16,19 +48,54 @@ const FeedbackModal = () => {
     formState: { errors },
   } = useForm();
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
+    const addedTime = new Date().toLocaleString();
     const { userName, feedback, imageURL } = e;
+    const formData = {
+      addedTime,
+      userName,
+      userEmail: user?.email,
+      userImage: user?.photoURL,
+      feedback,
+      imageURL,
+    };
+    try {
+      await feedbackAsync(formData);
+      toast.success("Feedback Submitted.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+    } catch {
+      toast.error("Failed To Submit Feedback.", {
+        style: {
+          border: "1px solid #932584",
+          padding: "16px",
+          color: "#932584",
+          background: "#fce4ec",
+        },
+        iconTheme: {
+          primary: "#932584",
+          secondary: "#fce4ec",
+        },
+      });
+    }
     reset();
     handleOpen();
-    const formData = { userName, feedback, imageURL };
-    console.log(formData);
   };
 
   return (
     <div>
       <div className="text-center">
         <button
-          onClick={handleOpen}
+          onClick={handleUserAddFeedback}
           className="px-4 md:px-6 py-2 md:py-3 text-base font-semibold tracking-wide text-pink-50 bg-[#932584]  rounded-lg"
         >
           Add Feedback
@@ -51,7 +118,7 @@ const FeedbackModal = () => {
             </label>
             <input
               name="userName"
-              defaultValue={"Arnab Saha"}
+              defaultValue={user?.displayName}
               className="block w-full px-4 py-2 text-[#932584] bg-[#f8d1e0] border border-[#932584] rounded-lg  focus:outline-none"
               type="text"
               readOnly
@@ -120,31 +187,39 @@ const FeedbackModal = () => {
           </div>
 
           <div className="mt-6">
-            <button
-              type="submit"
-              className="w-full px-4 py-2 text-sm font-medium tracking-wide text-pink-50 bg-[#932584] capitalize rounded-lg focus:outline-none"
-            >
-              Submit
-            </button>
+            {pendingFeedback ? (
+              <PostLoader />
+            ) : (
+              <button
+                type="submit"
+                className="w-full px-4 py-2 text-sm font-medium tracking-wide text-pink-50 bg-[#932584] capitalize rounded-lg focus:outline-none"
+              >
+                Submit
+              </button>
+            )}
           </div>
         </form>
-        ;
       </Dialog>
     </div>
   );
 };
 
 const Gallery = () => {
+  const { allFeedbacks, loadingFeedbacks } = useGetAllFeedBacks();
   return (
     <div className="space-y-4 md:space-y-6">
       {/* Add Feedback Button  */}
       <FeedbackModal />
       {/* Gallery Card  */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {[...Array(12).keys()].map((idx) => (
-          <GalleryCard key={idx} />
-        ))}
-      </div>
+      {loadingFeedbacks ? (
+        <Loader />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {allFeedbacks.map((feedback) => (
+            <GalleryCard key={feedback._id} feedback={feedback} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
