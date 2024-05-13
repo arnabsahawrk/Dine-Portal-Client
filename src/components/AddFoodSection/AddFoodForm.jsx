@@ -69,7 +69,6 @@ const AddFoodForm = () => {
         },
       });
       reset();
-      //Refetch useMutations
       //Send The user to the added page and the hashLink id.
     } catch {
       toast.error("Adding Food In Database Failed.", {

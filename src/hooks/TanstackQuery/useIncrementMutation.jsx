@@ -8,7 +8,12 @@ const useIncrementMutation = () => {
     try {
       const response = await axiosSecure.patch("/foodSold", formData);
       const { data } = response;
-      queryClient.invalidateQueries(["allFoods", "singleFood", "topFoods"]);
+      queryClient.invalidateQueries([
+        "allFoods",
+        "singleFood",
+        "topFoods",
+        "addedFoods",
+      ]);
       return data;
     } catch (err) {
       throw new Error(err.response.data.message || "Failed to increment");

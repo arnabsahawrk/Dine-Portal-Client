@@ -80,7 +80,6 @@ const PurchaseFood = ({ singleFood }) => {
         },
       });
       reset();
-      //Refetch useMutations
       //Send The user to the added page and the hashLink id.
     } catch {
       toast.error("Order Failed.", {

@@ -9,7 +9,12 @@ const useAddFoodMutation = () => {
     try {
       const response = await axiosSecure.post("/foods", formData);
       const { data } = response;
-      queryClient.invalidateQueries(["allFoods", "singleFood", "topFoods"]);
+      queryClient.invalidateQueries([
+        "allFoods",
+        "singleFood",
+        "topFoods",
+        "addedFoods",
+      ]);
       return data;
     } catch (error) {
       throw new Error(error.response.data.message || "Failed to add food");
