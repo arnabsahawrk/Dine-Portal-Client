@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const TopFoodsCards = () => {
   const navigate = useNavigate();
-  const { topFoods, loadingTopFoods } = useGetTopFoods(0, 6);
+  const { topFoods, loadingTopFoods } = useGetTopFoods(0, 8);
 
   return (
     <>

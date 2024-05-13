@@ -4,8 +4,10 @@ import toast from "react-hot-toast";
 import useFirebase from "../../hooks/useFirebase";
 import useAddFoodMutation from "../../hooks/TanstackQuery/useAddFoodMutation";
 import PostLoader from "../Loader/PostLoader";
+import { useNavigate } from "react-router-dom";
 
 const AddFoodForm = () => {
+  const navigate = useNavigate();
   const { addFoodAsync, pendingAddFood } = useAddFoodMutation();
   const { user } = useFirebase();
 
@@ -69,7 +71,7 @@ const AddFoodForm = () => {
         },
       });
       reset();
-      //Send The user to the added page and the hashLink id.
+      navigate("/addedFoods");
     } catch {
       toast.error("Adding Food In Database Failed.", {
         style: {

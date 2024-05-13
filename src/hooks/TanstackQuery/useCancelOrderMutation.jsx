@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../Axios/useAxiosSecure";
 
-const useIncrementMutation = () => {
+const useCancelOrderMutation = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  const patchData = async (formData) => {
+  const deleteOrder = async (id) => {
     try {
-      const response = await axiosSecure.patch("/foodSold", formData);
+      const response = await axiosSecure.delete(`/orders/${id}`);
       const { data } = response;
       queryClient.invalidateQueries([
         "allFoods",
@@ -17,15 +17,15 @@ const useIncrementMutation = () => {
       ]);
       return data;
     } catch (err) {
-      throw new Error(err.response.data.message || "Failed to increment");
+      throw new Error(err.response.data.message || "Failed to delete order.");
     }
   };
 
-  const { mutateAsync: incrementAsync, isPending: pendingIncrement } =
+  const { mutateAsync: deleteOrderAsync, isPending: pendingOrder } =
     useMutation({
-      mutationFn: patchData,
+      mutationFn: deleteOrder,
     });
-  return { incrementAsync, pendingIncrement };
+  return { deleteOrderAsync, pendingOrder };
 };
 
-export default useIncrementMutation;
+export default useCancelOrderMutation;

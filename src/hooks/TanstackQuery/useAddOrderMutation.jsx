@@ -13,6 +13,7 @@ const useAddOrderMutation = () => {
         "singleFood",
         "topFoods",
         "addedFoods",
+        "orderedFoods",
       ]);
       return data;
     } catch (err) {

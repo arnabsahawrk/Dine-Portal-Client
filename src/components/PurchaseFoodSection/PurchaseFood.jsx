@@ -6,8 +6,10 @@ import toast from "react-hot-toast";
 import useAddOrderMutation from "../../hooks/TanstackQuery/useAddOrderMutation";
 import PostLoader from "../Loader/PostLoader";
 import useIncrementMutation from "../../hooks/TanstackQuery/useIncrementMutation";
+import { useNavigate } from "react-router-dom";
 
 const PurchaseFood = ({ singleFood }) => {
+  const navigate = useNavigate();
   const { orderAsync, pendingOrder } = useAddOrderMutation();
   const { incrementAsync } = useIncrementMutation();
   const {
@@ -62,11 +64,11 @@ const PurchaseFood = ({ singleFood }) => {
       BuyerEmail,
       BuyerPic,
       buyerQuantity,
+      purchaseDate,
     };
 
     try {
       await orderAsync(formData);
-      await incrementAsync({ foodId, buyerQuantity });
       toast.success("Order Done Successfully.", {
         style: {
           border: "1px solid #932584",
@@ -80,7 +82,8 @@ const PurchaseFood = ({ singleFood }) => {
         },
       });
       reset();
-      //Send The user to the added page and the hashLink id.
+      navigate("/orderedFoods");
+      await incrementAsync({ foodId, buyerQuantity });
     } catch {
       toast.error("Order Failed.", {
         style: {

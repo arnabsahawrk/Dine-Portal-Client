@@ -14,6 +14,7 @@ const useUpdateAddedFood = () => {
         "singleFood",
         "topFoods",
         "addedFoods",
+        "orderedFoods",
       ]);
       return data;
     } catch (err) {
