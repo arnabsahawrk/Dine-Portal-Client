@@ -12,13 +12,12 @@ import {
 import auth from "../firebase/firebase.config";
 //Firebase Storage
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import useAxiosSecure from "../hooks/Axios/useAxiosSecure";
+import axios from "axios";
 
 export const FirebaseContext = createContext(null);
 const FirebaseContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const axiosSecure = useAxiosSecure();
 
   //Create User
   const createUser = (email, password) => {
@@ -57,20 +56,25 @@ const FirebaseContextProvider = ({ children }) => {
   //Observer On User
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      const loggedUser = currentUser?.email || user?.email;
+      const userEmail = currentUser?.email || user?.email;
+      const loggedUser = { email: userEmail };
       setUser(currentUser);
       setLoading(false);
 
       //Set or clear cookie token
       if (currentUser) {
-        axiosSecure.post("/jwt", loggedUser);
+        axios.post(`${import.meta.env.VITE_SERVER_URL}/jwt`, loggedUser, {
+          withCredentials: true,
+        });
       } else {
-        axiosSecure.post("/logout", loggedUser);
+        axios.post(`${import.meta.env.VITE_SERVER_URL}/logout`, loggedUser, {
+          withCredentials: true,
+        });
       }
     });
 
     return () => unsubscribe();
-  }, [user, axiosSecure]);
+  }, [user]);
 
   const firebaseStorage = async (imageFile, fileName) => {
     const storage = getStorage();
