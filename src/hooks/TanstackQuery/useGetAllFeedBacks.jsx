@@ -1,11 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import useAxiosCommon from "../Axios/useAxiosCommon";
 
 const useGetAllFeedBacks = () => {
   const axiosCommon = useAxiosCommon();
-  const getAllData = async () => {
+  const getAllData = async ({ skip, limit }) => {
     try {
-      const response = await axiosCommon.get("/feedback");
+      const response = await axiosCommon.get(
+        `/feedback?skip=${skip}&limit=${limit}`
+      );
       const { data } = response;
       return data;
     } catch (err) {
@@ -15,11 +17,15 @@ const useGetAllFeedBacks = () => {
     }
   };
 
-  const { data: allFeedbacks, isLoading: loadingFeedbacks } = useQuery({
-    queryKey: ["feedback"],
-    queryFn: getAllData,
+  const {
+    mutateAsync: feedbacksAsync,
+    data: allFeedbacks,
+    isPending: pendingFeedbacks,
+  } = useMutation({
+    mutationKey: ["feedback"],
+    mutationFn: getAllData,
   });
-  return { allFeedbacks, loadingFeedbacks };
+  return { feedbacksAsync, allFeedbacks, pendingFeedbacks };
 };
 
 export default useGetAllFeedBacks;

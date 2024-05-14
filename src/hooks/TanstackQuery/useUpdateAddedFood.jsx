@@ -16,6 +16,7 @@ const useUpdateAddedFood = () => {
         "addedFoods",
         "orderedFoods",
         "feedback",
+        "feedbackCount",
       ]);
       return data;
     } catch (err) {

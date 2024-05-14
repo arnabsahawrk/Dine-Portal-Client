@@ -78,7 +78,7 @@ const FirebaseContextProvider = ({ children }) => {
 
   const firebaseStorage = async (imageFile, fileName) => {
     const storage = getStorage();
-    const storageRef = ref(storage, `profile_images/${fileName}`);
+    const storageRef = ref(storage, `images/${fileName}`);
     const uploadTask = uploadBytes(storageRef, imageFile);
     try {
       await uploadTask;

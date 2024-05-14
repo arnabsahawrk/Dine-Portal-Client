@@ -16,6 +16,7 @@ const useAddFoodMutation = () => {
         "addedFoods",
         "orderedFoods",
         "feedback",
+        "feedbackCount",
       ]);
       return data;
     } catch (error) {

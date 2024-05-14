@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Dialog, Typography } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { Dialog, IconButton, Typography } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import GalleryCard from "./GalleryCard";
 import useFirebase from "../../hooks/useFirebase";
@@ -9,6 +9,8 @@ import usePostFeedback from "../../hooks/TanstackQuery/usePostFeedback";
 import PostLoader from "../Loader/PostLoader";
 import useGetAllFeedBacks from "../../hooks/TanstackQuery/useGetAllFeedBacks";
 import Loader from "../Loader/Loader";
+import useGetTotalFeedbackCount from "../../hooks/TanstackQuery/useGetTotalFeedbackCount";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/16/solid";
 
 //Modal
 const FeedbackModal = () => {
@@ -205,19 +207,82 @@ const FeedbackModal = () => {
 };
 
 const Gallery = () => {
-  const { allFeedbacks, loadingFeedbacks } = useGetAllFeedBacks();
+  const { feedbacksAsync, allFeedbacks, pendingFeedbacks } =
+    useGetAllFeedBacks();
+  const { countFeedback, loadingCount } = useGetTotalFeedbackCount();
+  const { count } = countFeedback || {};
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  //Calculate The Number Of Page
+  const numberOfPage = Math.ceil(count / 6);
+
+  //Page Set
+  const [active, setActive] = useState(1);
+
+  const next = () => {
+    if (active === numberOfPage) return;
+
+    setActive(active + 1);
+  };
+
+  const prev = () => {
+    if (active === 1) return;
+
+    setActive(active - 1);
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      await feedbacksAsync({ skip: active - 1, limit: 6 });
+    };
+    getData();
+  }, [active, feedbacksAsync]);
+
+  useEffect(() => {
+    setFeedbacks(allFeedbacks);
+    setLoading(pendingFeedbacks);
+  }, [allFeedbacks, pendingFeedbacks]);
+
   return (
     <div className="space-y-4 md:space-y-6">
       {/* Add Feedback Button  */}
       <FeedbackModal />
       {/* Gallery Card  */}
-      {loadingFeedbacks ? (
+      {loading ? (
         <Loader />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {allFeedbacks.map((feedback) => (
+          {feedbacks.map((feedback) => (
             <GalleryCard key={feedback._id} feedback={feedback} />
           ))}
+        </div>
+      )}
+      {/* Pagination  */}
+      {loadingCount ? (
+        <PostLoader />
+      ) : (
+        <div className="flex justify-center items-center gap-8">
+          <IconButton
+            size="md"
+            onClick={prev}
+            disabled={active === 1}
+            className="bg-[#932584] text-pink-50"
+          >
+            <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+          </IconButton>
+          <Typography className="font-medium text-[#932584] text-xl">
+            Page <strong className="text-[#d92775]">{active}</strong> of
+            <strong className="text-[#d92775]"> {numberOfPage}</strong>
+          </Typography>
+          <IconButton
+            size="md"
+            onClick={next}
+            disabled={active === numberOfPage}
+            className="bg-[#932584] text-pink-50"
+          >
+            <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+          </IconButton>
         </div>
       )}
     </div>

@@ -15,6 +15,7 @@ const useIncrementMutation = () => {
         "addedFoods",
         "orderedFoods",
         "feedback",
+        "feedbackCount",
       ]);
       return data;
     } catch (err) {

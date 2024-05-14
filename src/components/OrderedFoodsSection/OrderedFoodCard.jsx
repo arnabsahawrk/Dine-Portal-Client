@@ -5,6 +5,7 @@ import useCancelOrderMutation from "../../hooks/TanstackQuery/useCancelOrderMuta
 import PostLoader from "../Loader/PostLoader";
 import toast from "react-hot-toast";
 import useIncrementMutationAgain from "../../hooks/TanstackQuery/useIncrementMutationAgain";
+import { Link } from "react-router-dom";
 
 const OrderedFoodCard = ({ food }) => {
   const { deleteOrderAsync, pendingOrder } = useCancelOrderMutation();
@@ -59,23 +60,25 @@ const OrderedFoodCard = ({ food }) => {
 
   return (
     <div className="overflow-hidden bg-[#d927754D] rounded-lg hover:shadow-2xl">
-      <img
-        className="object-cover w-full h-48"
-        src={foodImage}
-        alt={foodName}
-      />
-      <div className="px-4 py-2 text-center">
-        <h1 className="text-xl font-bold text-[#932584] uppercase">
-          {foodName}
-        </h1>
-        <ul className="mt-1 text-sm text-[#d92775]">
-          <li>Seller: {sellerName}</li>
-          <li>Ordered: {purchaseDate || "None"}</li>
-          <li>Category: {foodCategory}</li>
-          <li>Order Quantity: {buyerQuantity}</li>
-          <li>Price: ${price}</li>
-        </ul>
-      </div>
+      <Link to={`/allFoods/foodDetails/${foodId}`}>
+        <img
+          className="object-cover w-full h-48"
+          src={foodImage}
+          alt={foodName}
+        />
+        <div className="px-4 py-2 text-center">
+          <h1 className="text-xl font-bold text-[#932584] uppercase">
+            {foodName}
+          </h1>
+          <ul className="mt-1 text-sm text-[#d92775]">
+            <li>Seller: {sellerName}</li>
+            <li>Ordered: {purchaseDate || "None"}</li>
+            <li>Category: {foodCategory}</li>
+            <li>Order Quantity: {buyerQuantity}</li>
+            <li>Price: ${price}</li>
+          </ul>
+        </div>
+      </Link>
 
       <div className="flex items-center justify-center px-4 py-2 bg-[#d927754D]">
         <button

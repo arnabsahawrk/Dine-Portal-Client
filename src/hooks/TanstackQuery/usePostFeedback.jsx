@@ -15,6 +15,7 @@ const usePostFeedback = () => {
         "addedFoods",
         "orderedFoods",
         "feedback",
+        "feedbackCount",
       ]);
       return data;
     } catch (error) {
