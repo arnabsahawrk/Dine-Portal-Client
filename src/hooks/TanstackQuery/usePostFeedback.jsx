@@ -1,12 +1,21 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../Axios/useAxiosSecure";
 
 const usePostFeedback = () => {
   const axiosSecure = useAxiosSecure();
+  const queryClient = useQueryClient();
   const postFeedback = async (formData) => {
     try {
       const response = await axiosSecure.post("/feedback", formData);
       const { data } = response;
+      queryClient.invalidateQueries([
+        "allFoods",
+        "singleFood",
+        "topFoods",
+        "addedFoods",
+        "orderedFoods",
+        "feedback",
+      ]);
       return data;
     } catch (error) {
       throw new Error(

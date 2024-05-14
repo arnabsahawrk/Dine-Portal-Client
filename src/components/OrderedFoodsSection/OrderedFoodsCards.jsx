@@ -12,7 +12,7 @@ const OrderedFoodsCards = () => {
         <Loader />
       ) : (
         <>
-          {orderedFoods.length ? (
+          {orderedFoods?.length ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {orderedFoods?.map((food) => (
                 <OrderedFoodCard key={food._id} food={food} />

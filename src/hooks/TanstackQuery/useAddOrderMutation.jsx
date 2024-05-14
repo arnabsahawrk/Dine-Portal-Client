@@ -14,6 +14,7 @@ const useAddOrderMutation = () => {
         "topFoods",
         "addedFoods",
         "orderedFoods",
+        "feedback",
       ]);
       return data;
     } catch (err) {

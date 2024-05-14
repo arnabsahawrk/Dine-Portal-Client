@@ -11,7 +11,7 @@ const AddedFoodsCards = () => {
         <Loader />
       ) : (
         <>
-          {addedFoods.length ? (
+          {addedFoods?.length ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {addedFoods?.map((food) => (
                 <AddedFoodCard key={food._id} food={food} />
