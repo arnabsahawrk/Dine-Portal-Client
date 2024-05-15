@@ -85,7 +85,109 @@ const AllFoodsCards = () => {
             Search
           </Button>
         </div>
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex justify-center items-center gap-2 flex-wrap">
+          {/* Filter On Category  */}
+          <Menu>
+            <MenuHandler>
+              <Button
+                size="sm"
+                className="bg-[#932584] text-pink-50 font-bold text-sm rounded"
+              >
+                Category
+              </Button>
+            </MenuHandler>
+            <MenuList className="bg-pink-50 border border-[#932584] shadow-xl z-40">
+              <MenuItem
+                onClick={() => handleFilter("Indian")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  Indian
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFilter("Japanese")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  Japanese
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFilter("Thai")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  Thai
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFilter("Italian")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  Italian
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFilter("Mexican")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  Mexican
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFilter("Chinese")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  Chinese
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFilter("American")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  American
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFilter("French")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  French
+                </Typography>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          {/* Filter On Low & High Price, Top Sold  */}
           <Menu>
             <MenuHandler>
               <Button
@@ -95,7 +197,7 @@ const AllFoodsCards = () => {
                 Filter
               </Button>
             </MenuHandler>
-            <MenuList className="bg-pink-50 border border-[#932584] shadow-xl">
+            <MenuList className="bg-pink-50 border border-[#932584] shadow-xl z-40">
               <MenuItem
                 onClick={() => handleFilter("low")}
                 className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
@@ -131,6 +233,7 @@ const AllFoodsCards = () => {
               </MenuItem>
             </MenuList>
           </Menu>
+          {/* Clear  */}
           <Button
             onClick={handleClear}
             size="sm"
