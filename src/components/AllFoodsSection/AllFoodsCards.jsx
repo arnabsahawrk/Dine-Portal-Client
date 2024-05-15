@@ -1,24 +1,46 @@
-import { Button } from "@material-tailwind/react";
+import {
+  Button,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+  Typography,
+} from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import useGetAllFoods from "../../hooks/TanstackQuery/useGetAllFoods";
 import Loader from "../Loader/Loader";
 import TopFoodCard from "../TopFoodsSection/TopFoodCard";
 import useGetSearchFoods from "../../hooks/TanstackQuery/useGetSearchFoods";
 import EmptyFoods from "../Empty/EmptyFoods";
+import useGetFilterResult from "../../hooks/TanstackQuery/useGetFilterResult";
 
 const AllFoodsCards = () => {
   const { allFoods: foods, loadingAllFoods: loading } = useGetAllFoods();
   const { searchResult, searchAsync, pendingSearch } = useGetSearchFoods();
+  const { filterResult, filterAsync, pendingFilter } = useGetFilterResult();
   const [allFoods, setAllFoods] = useState(foods);
   const [loadingAllFoods, setLoadingAllFoods] = useState(loading);
   const [search, SetSearch] = useState("");
   const onChange = ({ target }) => SetSearch(target.value);
   const [clear, setClear] = useState(false);
 
+  //Search
   const handleSearch = async () => {
     await searchAsync(search);
     setClear(true);
   };
+
+  //Filter
+  const handleFilter = async (value) => {
+    await filterAsync(value);
+    setClear(true);
+  };
+
+  //Load Search Result Foods
+  useEffect(() => {
+    setAllFoods(filterResult);
+    setLoadingAllFoods(pendingFilter);
+  }, [filterResult, pendingFilter]);
 
   //Load Search Result Foods
   useEffect(() => {
@@ -63,11 +85,58 @@ const AllFoodsCards = () => {
             Search
           </Button>
         </div>
-        <div className={`justify-center ${clear ? "flex" : "hidden"}`}>
+        <div className="flex justify-center items-center gap-2">
+          <Menu>
+            <MenuHandler>
+              <Button
+                size="sm"
+                className="bg-[#932584] text-pink-50 font-bold text-sm rounded"
+              >
+                Filter
+              </Button>
+            </MenuHandler>
+            <MenuList className="bg-pink-50 border border-[#932584] shadow-xl">
+              <MenuItem
+                onClick={() => handleFilter("low")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  Low To High Price
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFilter("high")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  High To Low Price
+                </Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleFilter("sold")}
+                className="hover:bg-none hover:bg-opacity-0 focus:bg-none focus:bg-opacity-0 active:bg-none active:bg-opacity-0 py-1"
+              >
+                <Typography
+                  variant="paragraph"
+                  className="font-medium text-[#932584] font-raleway hover:text-[#d92775]"
+                >
+                  Top Foods On Sold
+                </Typography>
+              </MenuItem>
+            </MenuList>
+          </Menu>
           <Button
             onClick={handleClear}
             size="sm"
-            className="bg-[#932584] text-pink-50 font-bold text-sm rounded"
+            className={`bg-[#932584] text-pink-50 font-bold text-sm rounded ${
+              clear ? "" : "hidden"
+            }`}
           >
             Clear
           </Button>

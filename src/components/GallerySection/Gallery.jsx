@@ -253,7 +253,7 @@ const Gallery = () => {
         <Loader />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {feedbacks.map((feedback) => (
+          {feedbacks?.map((feedback) => (
             <GalleryCard key={feedback._id} feedback={feedback} />
           ))}
         </div>
