@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Typography } from "@material-tailwind/react";
 import useFirebase from "../../hooks/useFirebase";
 import toast from "react-hot-toast";
+import PostLoader from "../Loader/PostLoader";
 
 const Registration = () => {
   const [passVisible, setPassVisible] = useState(false);
@@ -23,6 +24,7 @@ const Registration = () => {
     updateUserProfile,
     firebaseStorage,
     logInWithGoogle,
+    storageLoader,
   } = useFirebase();
 
   //Authenticate New User
@@ -318,12 +320,16 @@ const Registration = () => {
               )}
             </div>
             <div className="mt-6">
-              <button
-                type="submit"
-                className="w-full px-4 py-2 text-sm font-medium tracking-wide text-pink-50 bg-[#932584] capitalize rounded-lg focus:outline-none"
-              >
-                Register
-              </button>
+              {storageLoader ? (
+                <PostLoader />
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full px-4 py-2 text-sm font-medium tracking-wide text-pink-50 bg-[#932584] capitalize rounded-lg focus:outline-none"
+                >
+                  Register
+                </button>
+              )}
             </div>
           </form>
 

@@ -14,7 +14,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/16/solid";
 
 //Modal
 const FeedbackModal = () => {
-  const { user } = useFirebase();
+  const { user, firebaseStorage, storageLoader } = useFirebase();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
   const navigate = useNavigate();
@@ -52,7 +52,12 @@ const FeedbackModal = () => {
 
   const handleFormSubmit = async (e) => {
     const addedTime = new Date().toLocaleString();
-    const { userName, feedback, imageURL } = e;
+    const { userName, feedback } = e;
+    const imageFile = e.image[0];
+
+    //Get a imageURL from firebase.
+    const imageURL = await firebaseStorage(imageFile, imageFile.name);
+
     const formData = {
       addedTime,
       userName,
@@ -161,8 +166,44 @@ const FeedbackModal = () => {
               </Typography>
             )}
           </div>
+          {/* Image Upload  */}
+          <div>
+            <label
+              htmlFor="image"
+              className="block mb-2 text-sm font-medium text-[#932584]"
+            >
+              Image
+            </label>
+            <input
+              name="image"
+              type="file"
+              className="block w-full px-3 py-1 text-sm text-[#932584] bg-[#f8d1e0] border border-[#932584] rounded-lg file:bg-[#932584] file:text-pink-50 file:text-sm file:px-4 file:py-1.5 file:border-none file:rounded-lg focus:border-[#d92775] focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-[#d92775]"
+              accept="image/jpeg, image/jpg, image/png"
+              {...register("image", {
+                required: "Please select an image",
+                validate: {
+                  fileType: (value) => {
+                    const fileExtension = value[0]?.type.split("/")[1];
+                    return (
+                      ["jpeg", "jpg", "png"].includes(
+                        fileExtension.toLowerCase()
+                      ) || "Only JPEG, JPG, and PNG files are allowed"
+                    );
+                  },
+                },
+              })}
+            />
+            {errors.image && (
+              <Typography
+                variant="paragraph"
+                className="text-[#d92775] font-DotGothic16 capitalize italic"
+              >
+                {errors.image?.message}
+              </Typography>
+            )}
+          </div>
           {/* URL  */}
-          <div className="mt-4">
+          {/*<div className="mt-4">
             <label className="block mb-2 text-sm font-medium text-[#932584]">
               Image URL:
             </label>
@@ -186,10 +227,10 @@ const FeedbackModal = () => {
                 {errors.imageURL?.message}
               </Typography>
             )}
-          </div>
+          </div> */}
 
           <div className="mt-6">
-            {pendingFeedback ? (
+            {pendingFeedback || storageLoader ? (
               <PostLoader />
             ) : (
               <button

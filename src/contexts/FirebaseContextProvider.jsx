@@ -18,6 +18,7 @@ export const FirebaseContext = createContext(null);
 const FirebaseContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [storageLoader, setStorageLoader] = useState(false);
 
   //Create User
   const createUser = (email, password) => {
@@ -77,14 +78,17 @@ const FirebaseContextProvider = ({ children }) => {
   }, [user]);
 
   const firebaseStorage = async (imageFile, fileName) => {
+    setStorageLoader(true);
     const storage = getStorage();
     const storageRef = ref(storage, `images/${fileName}`);
     const uploadTask = uploadBytes(storageRef, imageFile);
     try {
       await uploadTask;
       const downloadURL = await getDownloadURL(storageRef);
+      setStorageLoader(false);
       return downloadURL;
     } catch (error) {
+      setStorageLoader(false);
       console.log("Firebase Storage Failed:", error);
     }
   };
@@ -100,6 +104,7 @@ const FirebaseContextProvider = ({ children }) => {
     updateUserProfile,
     logInWithGoogle,
     firebaseStorage,
+    storageLoader,
   };
   return (
     <FirebaseContext.Provider value={firebaseUser}>

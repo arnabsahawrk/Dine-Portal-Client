@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const AddFoodForm = () => {
   const navigate = useNavigate();
   const { addFoodAsync, pendingAddFood } = useAddFoodMutation();
-  const { user } = useFirebase();
+  const { user, firebaseStorage, storageLoader } = useFirebase();
 
   const {
     register,
@@ -29,13 +29,16 @@ const AddFoodForm = () => {
       userName,
       userEmail,
       foodName,
-      imageURL,
       foodCategory,
       foodOrigin,
       quantity,
       price,
       description,
     } = e;
+    const imageFile = e.image[0];
+
+    //Get a imageURL from firebase.
+    const imageURL = await firebaseStorage(imageFile, imageFile.name);
 
     quantity = parseFloat(quantity);
     price = parseFloat(price);
@@ -156,7 +159,7 @@ const AddFoodForm = () => {
           )}
         </div>
         {/* Image Upload  */}
-        {/* <div>
+        <div>
           <label
             htmlFor="image"
             className="block mb-2 text-sm font-medium text-[#932584]"
@@ -190,9 +193,9 @@ const AddFoodForm = () => {
               {errors.image?.message}
             </Typography>
           )}
-        </div> */}
+        </div>
         {/* Image URL  */}
-        <div>
+        {/*<div>
           <label className="block mb-2 text-sm font-medium text-[#932584]">
             Image URL
           </label>
@@ -216,7 +219,7 @@ const AddFoodForm = () => {
               {errors.imageURL?.message}
             </Typography>
           )}
-        </div>
+        </div> */}
         {/* Food Category  */}
         <div>
           <label className="block mb-2 text-sm font-medium text-[#932584]">
@@ -347,7 +350,7 @@ const AddFoodForm = () => {
         </div>
 
         <div className="mt-6 md:col-span-2">
-          {pendingAddFood ? (
+          {pendingAddFood || storageLoader ? (
             <PostLoader />
           ) : (
             <button
