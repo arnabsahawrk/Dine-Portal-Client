@@ -1,17 +1,22 @@
-import { Typography } from "@material-tailwind/react";
+import { Dialog, Typography } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 import useFirebase from "../../hooks/useFirebase";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import useAddOrderMutation from "../../hooks/TanstackQuery/useAddOrderMutation";
 import PostLoader from "../Loader/PostLoader";
-import useIncrementMutation from "../../hooks/TanstackQuery/useIncrementMutation";
-import { useNavigate } from "react-router-dom";
+// import useIncrementMutation from "../../hooks/TanstackQuery/useIncrementMutation";
+// import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import PaymentCheckout from "./PaymentCheckout";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 const PurchaseFood = ({ singleFood }) => {
-  const navigate = useNavigate();
-  const { orderAsync, pendingOrder } = useAddOrderMutation();
-  const { incrementAsync } = useIncrementMutation();
+  // const navigate = useNavigate();
+  const { pendingOrder } = useAddOrderMutation();
+  // const { incrementAsync } = useIncrementMutation();
   const {
     register,
     handleSubmit,
@@ -20,6 +25,12 @@ const PurchaseFood = ({ singleFood }) => {
   } = useForm();
   let purchaseDate = new Date().toLocaleDateString();
   const { user } = useFirebase();
+
+  //Payment Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen((cur) => !cur);
+  const [formData, setFormData] = useState(null);
+  const [cardError, setCardError] = useState(null);
 
   let {
     _id: foodId,
@@ -67,37 +78,41 @@ const PurchaseFood = ({ singleFood }) => {
       purchaseDate,
     };
 
-    try {
-      await orderAsync(formData);
-      toast.success("Order Done Successfully.", {
-        style: {
-          border: "1px solid #932584",
-          padding: "16px",
-          color: "#932584",
-          background: "#fce4ec",
-        },
-        iconTheme: {
-          primary: "#932584",
-          secondary: "#fce4ec",
-        },
-      });
-      reset();
-      navigate("/orderedFoods");
-      await incrementAsync({ foodId, buyerQuantity });
-    } catch {
-      toast.error("Order Failed.", {
-        style: {
-          border: "1px solid #932584",
-          padding: "16px",
-          color: "#932584",
-          background: "#fce4ec",
-        },
-        iconTheme: {
-          primary: "#932584",
-          secondary: "#fce4ec",
-        },
-      });
-    }
+    //Payment Integration
+    setFormData(formData);
+    handleOpen();
+
+    // try {
+    //   await orderAsync(formData);
+    //   toast.success("Order Done Successfully.", {
+    //     style: {
+    //       border: "1px solid #932584",
+    //       padding: "16px",
+    //       color: "#932584",
+    //       background: "#fce4ec",
+    //     },
+    //     iconTheme: {
+    //       primary: "#932584",
+    //       secondary: "#fce4ec",
+    //     },
+    //   });
+    //   reset();
+    //   navigate("/orderedFoods");
+    //   await incrementAsync({ foodId, buyerQuantity });
+    // } catch {
+    //   toast.error("Order Failed.", {
+    //     style: {
+    //       border: "1px solid #932584",
+    //       padding: "16px",
+    //       color: "#932584",
+    //       background: "#fce4ec",
+    //     },
+    //     iconTheme: {
+    //       primary: "#932584",
+    //       secondary: "#fce4ec",
+    //     },
+    //   });
+    // }
   };
   return (
     <div
@@ -193,19 +208,50 @@ const PurchaseFood = ({ singleFood }) => {
                 </Typography>
               )}
             </div>
-            {pendingOrder ? (
-              <PostLoader />
-            ) : (
-              <button
-                disabled={quantity ? false : true}
-                type="submit"
-                className={`px-4 py-2 text-base tracking-wide text-pink-50 ${
-                  quantity ? "bg-[#932584]" : "bg-[#93258480]"
-                }  rounded-md font-bold`}
+
+            {/* Payment Integration  */}
+            <div>
+              {cardError && (
+                <Typography
+                  variant="paragraph"
+                  className="text-[#d92775] font-DotGothic16 capitalize italic"
+                >
+                  {cardError}
+                </Typography>
+              )}
+              {pendingOrder ? (
+                <PostLoader />
+              ) : (
+                <button
+                  disabled={quantity ? false : true}
+                  type="submit"
+                  className={`px-4 py-2 text-base tracking-wide text-pink-50 ${
+                    quantity ? "bg-[#932584]" : "bg-[#93258480]"
+                  }  rounded-md font-bold`}
+                >
+                  {quantity ? "Purchase" : "Sold Out"}
+                </button>
+              )}
+              <Dialog
+                size="xs"
+                open={open}
+                handler={handleOpen}
+                className="bg-transparent shadow-none"
               >
-                {quantity ? "Purchase" : "Sold Out"}
-              </button>
-            )}
+                <div className="bg-pink-50 rounded-lg shadow-lg p-6">
+                  {/* //TODO: Stripe Form Here  */}
+                  <Elements stripe={stripePromise}>
+                    <PaymentCheckout
+                      formData={formData}
+                      handleClose={handleOpen}
+                      quantityReset={reset}
+                      setCardError={setCardError}
+                      cardError={cardError}
+                    />
+                  </Elements>
+                </div>
+              </Dialog>
+            </div>
           </form>
         </div>
       </div>
